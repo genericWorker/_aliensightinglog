@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Example Page</title>
+	<link href="jquery-ui.css" rel="stylesheet">
+	<style>
+	body{
+		font-family: "Trebuchet MS", sans-serif;
+		margin: 50px;
+	}
+	.demoHeaders {
+		margin-top: 2em;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+	.fakewindowcontain .ui-widget-overlay {
+		position: absolute;
+	}
+	select {
+		width: 200px;
+	}
+
+	#red, #green, #blue {
+	  float: left;
+	  clear: left;
+	  width: 300px;
+	  margin: 15px;
+	}
+	#swatch {
+	  width: 120px;
+	  height: 100px;
+	  margin-top: 36px;
+	  margin-left: 350px;
+	  background-image: none;
+	}
+	#red .ui-slider-range { background: #ef2929; }
+	#red .ui-slider-handle { border-color: #ef2929; }
+	#green .ui-slider-range { background: #8ae234; }
+	#green .ui-slider-handle { border-color: #8ae234; }
+	#blue .ui-slider-range { background: #729fcf; }
+	#blue .ui-slider-handle { border-color: #729fcf; }
+	</style>
+</head>
+<body>
+	<form>
+	<img src="images/aliens.png" width=200 height=100 style="margin-left: 125px;">
+	<h1 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%;">
+Alien Sighting Form</h1>
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%;background: #00eeff">
+Sighting Date</h3>
+
+<!-- Datepicker -->
+<div id="datepicker"></div>
+
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background: #00eeff">Creature Type</h3>
+<fieldset id="creatureType" style="width: 55%">
+	<label for="sponge">Sponge-like</label>
+	<input type="radio" name="sponge" id="sponge">
+	<label for="worm">Worm-like</label>
+	<input type="radio" name="sponge" checked="true" id="worm">
+	<label for="insect">Insect-like</label>
+	<input type="radio" name="sponge" id="insect">
+	<label for="fish">Fish-like</label>
+	<input type="radio" name="sponge" id="fish">
+	<label for="bird">Bird-like</label>
+	<input type="radio" name="sponge" id="bird">
+  </fieldset>
+
+<!-- Slider -->
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background: #00eeff">
+<label for="weight">Alien Weight (kg)</label></h3>
+<input type="text" id="weight" readonly style="border:0; color:#f6931f; font-weight:bold;">
+<div id="slider" style="background: red; width:40%;"></div>
+
+<!-- Slider -->
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background: #00eeff">
+	<label for="height">Alien Height (m)</label></h3>
+<input type="text" id="height" readonly style="border:0; color:#f6931f; font-weight:bold;">
+<div id="slider2" style="background: red; width:40%;"></div>
+
+<!-- Spinner -->
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background:#00eeff">
+ Number of Eyes</h3>
+<input id="spinnereyes" value=5>
+
+<!-- Spinner -->
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background:#00eeff">Number of Arms</h3>
+<input id="spinnerarms"  value=0>
+
+<!-- Spinner -->
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background:#00eeff">
+Number of Legs</h3>
+<input id="spinnerlegs"  value=5>
+
+
+<h3 class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px; width: 40%; background: #00eeff">
+Color of Creature
+</h3>
+
+  <div id="red"></div>
+  <div id="green"></div>
+  <div id="blue"></div>
+
+  <div id="swatch" class="ui-widget-content ui-corner-all"></div>
+  <br>
+  <br>
+  <p>
+  <button id="dialog-link" class="ui-button ui-corner-all ui-widget">Submit</button>
+</p>
+
+<!-- ui-dialog -->
+<div id="dialog" title="Thank you!">
+
+	<p style="font-family:roboto">Your sighting has been reported.<br>Keep watching!</p>
+	<img src="images/alien2.png" width=50 height=50>
+	<div id="results"></div>
+</div>
+</form>
+<script src="external/jquery/jquery.js"></script>
+<script src="jquery-ui.js"></script>
+<script>
+
+	function handleFormSubmit(event) {
+		event.preventDefault();
+		let siteReport = new Object();
+		siteReport.date =  $("#datepicker").val();
+		siteReport.creatureType = $("#creatureType :radio:checked").attr('id');
+		siteReport.weight = $("#slider").slider("option", "value");
+ 		siteReport.height = $("#slider2").slider("option", "value");
+		siteReport.numberEyes =  $("#spinnereyes").spinner("value");
+		siteReport.numberArms = $("#spinnerarms").spinner("value");
+		siteReport.numberLegs = $("#spinnerlegs").spinner("value");
+		siteReport.color = $( "#swatch" ).css("background-color");
+		// Convert siteReport object to a json object
+		const json = JSON.stringify(siteReport);
+		const heading = "<h4 className=\"ui-state-default ui-corner-all ui-helper-clearfix\" style=\"padding:4px; background: #999f29;\">Alien Sighting Report Json Data<h4>"
+		results.innerHTML = heading + json;
+	}
+
+	$( function() {
+		// initialize these
+	  $("#spinnereyes").spinner({min: 0, max:100});
+	  $( "#spinnerarms" ).spinner({min: 0, max:117});
+	  $( "#spinnerarms" ).spinner({min: 0, max:117});
+	  $( "#spinnerlegs" ).spinner({min: 0, max:21});
+	});
+	</script>
+<script>
+
+$("#slider-range-max1").slider({
+      range: "max",
+      min: 1,
+      max: 500,
+      value: 20,
+      slide: function( event, ui ) {
+        $( "#weight" ).val( "Weight: " + ui.value  + " kg");
+      }
+    });
+    $("#weight" ).val("Weight: " +  20 + " kg");
+
+
+$( "#button" ).button();
+$( "#button-icon" ).button({
+	icon: "ui-icon-gear",
+	showLabel: false
+});
+
+$( "#radioset" ).buttonset();
+
+$( "#dialog" ).dialog({
+	autoOpen: false,
+	width: 400,
+	buttons: [
+		{
+			text: "Ok",
+			click: function() {
+				$( this ).dialog( 'option', 'hide', 'explode' );
+				$( this ).dialog( "close" );
+			}
+		},
+		{
+			text: "Cancel",
+			click: function() {
+				$( this ).dialog( 'option', 'hide', 'blind' );
+				$( this ).dialog( "close" );
+			}
+		}
+	]
+});
+
+// Link to open the dialog
+$( "#dialog-link" ).click(function( event ) {
+//	event.preventDefault();
+	$( "#dialog" ).dialog( "open" );
+	handleFormSubmit(event);
+});
+
+$( "#datepicker" ).datepicker({
+	inline: true
+});
+
+$("#slider" ).slider({
+      range: "max",
+      min: 1,
+      max: 500,
+      value: 20,
+      slide: function( event, ui ) {
+        $( "#weight" ).val( "Weight: " + ui.value  + " kg");
+	  }
+}); 
+
+
+$("#slider2").slider({
+      range: "max",
+      min: 1,
+      max: 20,
+      value: 2,
+      slide: function( event, ui ) {
+        $( "#height" ).val( "Height: " + ui.value  + " m");
+	  }
+}); 
+$("#height" ).val("Height: " +  2 + " m");
+
+$( "input[type='radio']" ).checkboxradio({icon: false});
+
+$("#tooltip").tooltip();
+
+
+// Hover states on the static widgets
+$( "#dialog-link, #icons li" ).hover(
+	function() {
+		$( this ).addClass( "ui-state-hover" );
+	},
+	function() {
+		$( this ).removeClass( "ui-state-hover" );
+	}
+);
+</script>
+<script>
+	$( function() {
+	  function hexFromRGB(r, g, b) {
+		var hex = [
+		  r.toString( 16 ),
+		  g.toString( 16 ),
+		  b.toString( 16 )
+		];
+		$.each( hex, function( nr, val ) {
+		  if ( val.length === 1 ) {
+			hex[ nr ] = "0" + val;
+		  }
+		});
+		return hex.join( "" ).toUpperCase();
+	  }
+	  function refreshSwatch() {
+		var red = $( "#red" ).slider( "value" ),
+		  green = $( "#green" ).slider( "value" ),
+		  blue = $( "#blue" ).slider( "value" ),
+		  hex = hexFromRGB( red, green, blue );
+		$( "#swatch" ).css( "background-color", "#" + hex );
+	  }
+   
+	  $( "#red, #green, #blue" ).slider({
+		orientation: "horizontal",
+		range: "min",
+		max: 255,
+		value: 127,
+		slide: refreshSwatch,
+		change: refreshSwatch
+	  });
+	  $( "#red" ).slider( "value", 255 );
+	  $( "#green" ).slider( "value", 140 );
+	  $( "#blue" ).slider( "value", 60 );
+	} );
+	</script>
+</body>
+</html>

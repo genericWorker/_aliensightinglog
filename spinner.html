@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Spinner - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="/resources/demos/external/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script>
+  $( function() {
+    var spinner = $("#spinnereyes").spinner({min: 0, max:100});
+    $( "#spinnerarms" ).spinner({min: 0, max:10});
+    $( "#spinnerlegs" ).spinner({min: 0, max:7});
+ 
+    $( "#getvalue" ).on( "click", function() {
+      alert( spinner.spinner( "value" ) );
+    });
+    $( "#setvalue" ).on( "click", function() {
+      spinner.spinner( "value", 5 );
+    });
+ 
+    $( "button" ).button();
+  } );
+  </script>
+</head>
+<body>
+ 
+<p>
+  <label for="spinnereyes">Number of Eyes:</label>
+  <input id="spinnereyes" name="value">
+</p>
+
+<p>
+    <label for="spinnerarms">Number of Legs:</label>
+    <input id="spinnerarms" name="value">
+  </p>
+
+  <p>
+    <label for="spinnerlegs">Number of Arms:</label>
+    <input id="spinnerlegs" name="value">
+  </p>
+   
+ 
+<p>
+  <button id="getvalue">Get value</button>
+  <button id="setvalue">Set value to 5</button>
+</p>
+ 
+ 
+</body>
+</html>
