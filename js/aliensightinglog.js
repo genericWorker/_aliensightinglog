@@ -78,15 +78,24 @@ $(function() {
         })
         .then(() => {
             console.log("Data sent successfully!");
+            $("#alienForm")[0].reset();
+            
+            // Reset Sliders & Labels visually
+            $("#slider").slider("value", 20);
+            $("#w-label").text("20 kg");
+            
+            $("#slider2").slider("value", 2);
+            $("#h-label").text("2 m");
+            
+            // Reset Color Swatch
+            $("#red").slider("value", 255);
+            $("#green").slider("value", 140);
+            $("#blue").slider("value", 60);
+            $("#swatch").css("background-color", "rgb(255, 140, 60)");
+            
             if ($("#results").length) {
                 $("#results").append("<p style='color:green; font-weight:bold;'>✔ Sent to Google Sheet</p>");
             }
-            // Clear the form after success
-            $("#alienForm")[0].reset();
-            // Reset sliders to defaults manually
-            $("#slider, #slider2").slider("value", 20); 
-            $("#w-label").text("20 kg");
-            $("#h-label").text("2 m");
         })
         .catch(error => {
             console.error('Error!', error.message);
