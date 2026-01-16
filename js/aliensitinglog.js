@@ -49,11 +49,21 @@ $(function() {
 
     // 3. DIALOG INITIALIZATION (If you add <div id="dialog"></div> to your HTML)
     if ($("#dialog").length) {
-        $("#dialog").dialog({ 
+      $("#dialog").dialog({ 
             autoOpen: false, 
             modal: true, 
             width: 450,
-            buttons: { "Close": function() { $(this).dialog("close"); } }
+            open: function() {
+                // Check if the image is already there to prevent duplicates
+                if ($(this).parent().find(".dialog-logo").length === 0) {
+                    $(this).parent().find(".ui-dialog-title").prepend(
+                        '<img src="images/aliens.png" class="dialog-logo" style="width:30px; height:15px; vertical-align:middle; margin-right:10px;">'
+                    );
+                }
+            },
+            buttons: { 
+                "Close": function() { $(this).dialog("close"); } 
+            }
         });
     }
 
