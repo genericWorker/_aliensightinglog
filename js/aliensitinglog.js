@@ -1,21 +1,30 @@
 $(function() {
     // 1. INITIALIZE WIDGETS
     $("#datepicker").datepicker({ inline: true });
+    
+    // Initialize radio buttons
     $("input[type='radio']").checkboxradio({ icon: false });
-    $("#spinnereyes, #spinnerarms, #spinnerlegs").spinner({ min: 0 }).spinner("value", 0);
+    
+    // Initialize Spinners
+    $("#spinnereyes, #spinnerarms, #spinnerlegs").spinner({ min: 0 });
 
+    // Initialize Weight Slider
     $("#slider").slider({
-        range: "max", min: 1, max: 500, value: 20,
+        range: "min", 
+        min: 1, 
+        max: 500, 
+        value: 20,
         slide: function(event, ui) { $("#w-label").text(ui.value + " kg"); }
     });
+
+    // Initialize Height Slider
     $("#slider2").slider({
-        range: "max", min: 1, max: 20, value: 2,
+        range: "min", 
+        min: 1, 
+        max: 20, 
+        value: 2,
         slide: function(event, ui) { $("#h-label").text(ui.value + " m"); }
     });
-    $("#creatureType").controlgroup();
-    $( "input[type='radio']" ).checkboxradio({
-    icon: false
-});
 
     // 2. COLOR SWATCH LOGIC
     function refreshSwatch() {
@@ -26,21 +35,27 @@ $(function() {
     }
 
     $("#red, #green, #blue").slider({
-        orientation: "horizontal", range: "min", max: 255,
-        slide: refreshSwatch, change: refreshSwatch
+        orientation: "horizontal", 
+        range: "min", 
+        max: 255,
+        slide: refreshSwatch, 
+        change: refreshSwatch
     });
 
+    // Set Default Swatch Colors
     $("#red").slider("value", 255);
     $("#green").slider("value", 140);
     $("#blue").slider("value", 60);
 
-    // 3. DIALOG INITIALIZATION
-    $("#dialog").dialog({ 
-        autoOpen: false, 
-        modal: true, 
-        width: 450,
-        buttons: { "Close": function() { $(this).dialog("close"); } }
-    });
+    // 3. DIALOG INITIALIZATION (If you add <div id="dialog"></div> to your HTML)
+    if ($("#dialog").length) {
+        $("#dialog").dialog({ 
+            autoOpen: false, 
+            modal: true, 
+            width: 450,
+            buttons: { "Close": function() { $(this).dialog("close"); } }
+        });
+    }
 
     // 4. GOOGLE SHEETS SUBMISSION FUNCTION
     function sendToGoogleSheets(data) {
@@ -48,23 +63,27 @@ $(function() {
 
         fetch(scriptURL, {
             method: 'POST',
-            mode: 'no-cors', // Critical for local and GitHub Pages testing
+            mode: 'no-cors', 
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
         .then(() => {
-            console.log("Data sent to Google Sheets successfully!");
-            $("#results").append("<p style='color:green; font-weight:bold;'>✔ Sent to Google Sheet</p>");
+            console.log("Data sent successfully!");
+            // Use a simple alert if #results doesn't exist in HTML
+            if ($("#results").length) {
+                $("#results").append("<p style='color:green; font-weight:bold;'>✔ Sent to Google Sheet</p>");
+            } else {
+                alert("Data Sent to Secure Archives");
+            }
         })
         .catch(error => {
             console.error('Error!', error.message);
-            $("#results").append("<p style='color:red;'>✘ Submission Error</p>");
         });
     }
 
-    // 5. CLICK HANDLER
-    $("#dialog-link").click(function(event) {
+    // 5. CLICK HANDLER (Unified with HTML ID #submit-btn)
+    $("#submit-btn").click(function(event) {
         event.preventDefault();
         
         const dateObj = $("#datepicker").datepicker("getDate");
@@ -72,7 +91,7 @@ $(function() {
         // Construct the JSON object
         const siteReport = {
             date: dateObj ? $.datepicker.formatDate("yy-mm-dd", dateObj) : "None",
-            type: $("input[name='ct']:checked").attr('id') || "None", // Ensure radio 'name' matches HTML
+            type: $("input[name='ct']:checked").attr('id') || "None",
             weight: $("#slider").slider("value"),
             height: $("#slider2").slider("value"),
             color: $("#swatch").css("background-color"),
@@ -81,9 +100,13 @@ $(function() {
             legs: $("#spinnerlegs").spinner("value"),
         };
 
-        // Display preview in Dialog
-        $("#results").html("<pre>" + JSON.stringify(siteReport, null, 2) + "</pre>");
-        $("#dialog").dialog("open");
+        console.log("Submitting:", siteReport);
+
+        // Open Dialog if it exists
+        if ($("#dialog").length) {
+            $("#results").html("<pre>" + JSON.stringify(siteReport, null, 2) + "</pre>");
+            $("#dialog").dialog("open");
+        }
 
         // Send to Google
         sendToGoogleSheets(siteReport);

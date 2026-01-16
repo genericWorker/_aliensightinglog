@@ -1,73 +1,102 @@
-    /* Global UI Scaling to fit one screen */
-        body { font-size: 0.85em; background: #f4f4f4; margin: 10px; }
-        .container { 
-            max-width: 900px; margin: 0 auto; background: #fff; 
-            padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  /* --- Global UI --- */
+        body { font-size: 0.85em; background: #f0f2f5; margin: 20px; font-family: 'Segoe UI', Arial, sans-serif; }
+        .container { max-width: 850px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        header { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px; }
+        h1 { font-size: 1.8em !important; flex-grow: 1; margin: 0 !important; text-align: center; letter-spacing: 1px; }
+
+        /* --- Grid & Columns --- */
+        .form-grid { display: flex; gap: 25px; }
+        .column { flex: 1; display: flex; flex-direction: column; gap: 25px; }
+
+        /* --- Headers & Yellow Boxes --- */
+        h3 { 
+            background: #00eeff !important; padding: 8px 15px !important; margin: 0 !important; 
+            border-radius: 6px 6px 0 0; font-size: 0.95em !important; color: #000;
+            border: 1px solid #ccc; border-bottom: none; box-sizing: border-box;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
-        
-        header { display: flex; align-items: center; gap: 20px; margin-bottom: 10px; }
-        h1 { font-size: 1.5em !important; flex-grow: 1; margin: 0 !important; }
-        h3 { font-size: 1em !important; padding: 4px !important; margin: 10px 0 5px 0 !important; }
-
-        /* Two-Column Grid */
-        .form-grid { display: flex; gap: 20px; align-items: flex-start; }
-        .col-left { flex: 1; }
-        .col-right { flex: 1; }
-
-        /* Datepicker Selection Fix */
-        .ui-datepicker { width: 100% !important; }
-        .ui-datepicker td .ui-state-active {
-            background: #00eeff !important;
-            border: 1px solid #0099aa !important;
-            color: #000 !important;
+        .yellow-box {
+            background: #fff59d !important; padding: 12px; border: 1px solid #ccc;
+            border-radius: 0 0 8px 8px; box-sizing: border-box; 
+            height: 220px; position: relative; overflow: hidden;
         }
+        .short-box { height: 130px !important; } 
 
-        /* Stats & Spinners - Left Justified */
-        .stat-val { color: #f6931f; font-weight: bold; }
-        .spinner-group { 
-            display: flex; 
-            justify-content: flex-start !important; 
-            gap: 20px !important; 
-            margin: 10px 0 !important; 
-        }
-        .ui-spinner { width: 50px !important; }
-
-        /* COLOR SECTION - FORCING SWATCH ADJACENT */
-        .color-area { 
+        /* --- Morphology: ONE ROW --- */
+        #creatureType { 
+            border: none !important; 
             display: flex !important; 
-            flex-direction: row !important; 
-            align-items: center !important; 
-            gap: 15px !important; 
-            background: #eee; 
-            padding: 15px; 
-            border-radius: 5px; 
-            clear: both; /* Breaks any old floats */
+            width: 100%; 
+            justify-content: flex-start; 
+            gap: 2px; 
+            padding: 0; 
+            margin-top: 5px;
         }
+        .ui-checkboxradio-label { 
+            flex: 1; 
+            display: flex !important; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 10px 2px !important; 
+            font-size: 0.75em !important; 
+            margin: 0 !important; 
+            white-space: nowrap;
+        }
+
+        /* --- Color Picker: LITERAL COLORS --- */
+        .sliders-wrap { width: 180px; margin-top: -8px; }
+        .color-label { font-size: 0.7em; font-weight: bold; margin: 4px 0 2px 0; text-align: left; }
+        .ui-slider { background: #fdf5e6 !important; border: 1px solid #bbb !important; height: 8px !important; margin: 5px 0; }
+        .ui-slider-handle { border-radius: 50% !important; width: 1.1em !important; height: 1.1em !important; cursor: pointer !important; }
+
+        #red .ui-slider-range { background: #ff0000 !important; }
+        #red .ui-slider-handle { background: #ff0000 !important; border: 1px solid #8b0000 !important; }
+        #green .ui-slider-range { background: #00ff00 !important; }
+        #green .ui-slider-handle { background: #00ff00 !important; border: 1px solid #006400 !important; }
+        #blue .ui-slider-range { background: #0000ff !important; }
+        #blue .ui-slider-handle { background: #0000ff !important; border: 1px solid #00008b !important; }
         
-        .sliders-container { 
-            flex: 1 !important; 
-            display: block !important;
+        #swatch { position: absolute; right: 80px; top: 120px; width: 90px; height: 90px; border: 2px solid #333; border-radius: 4px; }
+
+        /* --- Technical Divider --- */
+        .thematic-divider { 
+            position: relative; height: 2px; margin: 45px 0 35px 0; background: #ccc; 
+            background-image: repeating-linear-gradient(90deg, #ccc, #ccc 49%, #f6931f 50%, #ccc 51%); 
+            background-size: 40px 100%; 
+        }
+        .thematic-divider::before {
+            content: "SECURE DATA TRANSMISSION CHANNEL // 0X-99";
+            position: absolute; top: -20px; left: 0; font-family: 'Courier New', monospace;
+            font-size: 9px; font-weight: bold; color: #888; letter-spacing: 1.5px;
+        }
+        .divider-marker { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 30px; height: 30px; background: #fff; border: 2px solid #333; 
+            border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; 
         }
 
-        #red, #green, #blue { 
-            margin: 12px 0 !important; 
-            float: none !important; /* Removes float from original css */
-            width: auto !important;
-        }
+        /* --- Spinners --- */
+        .spinner-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .spinner-group > div { flex: 1; font-size: 0.75em; text-align: center; font-weight: bold; }
+        .ui-spinner { display: inline-flex !important; width: 100%; height: 28px; border: 1px solid #bbb !important; background: #fdf5e6 !important; position: relative; overflow: hidden; }
+        .ui-spinner-input { width: calc(100% - 24px) !important; border: none !important; text-align: center; background: transparent !important; padding: 6px 0 !important; margin: 0 !important; }
+        .ui-spinner-button { width: 22px !important; height: 50% !important; right: 0 !important; background: #f6931f !important; border: none !important; position: absolute !important; display: flex !important; align-items: center; justify-content: center; border-left: 1px solid #d47d1a !important; }
+        .ui-spinner-up { top: 0 !important; border-bottom: 1px solid #d47d1a !important; }
+        .ui-spinner-down { bottom: 0 !important; }
+        .ui-spinner-up::after { content: "▲"; font-size: 8px; color: #000; }
+        .ui-spinner-down::after { content: "▼"; font-size: 8px; color: #000; }
 
-        #swatch {
-            width: 100px !important; 
-            height: 100px !important; 
-            margin: 0 !important; /* Removes the 350px margin from alien.css */
-            float: none !important; /* Removes float from alien.css */
-            flex-shrink: 0 !important;
-            border: 2px solid #333;
-            background-image: none !important;
-        }
+        /* --- Datepicker Styling --- */
+        .ui-datepicker-header { padding: 0 !important; height: 28px !important; display: flex; align-items: center; justify-content: center; }
+        .ui-datepicker-title { line-height: 28px !important; margin: 0 !important; text-align: center !important; width: 100%; font-weight: bold; }
 
-        /* Dialog & Buttons */
-        .ui-dialog-titlebar-close { display: none; } /* Hide header X */
-        .footer { text-align: center; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; }
-        #dialog-link { padding: 8px 30px; }
-        #results pre { font-size: 0.9em; background: #f9f9f9; padding: 10px; border: 1px inset #ccc; }
-        .ui-button { font-size: 0.9em !important; padding: 6px 20px !important; }
+        /* --- Footer & Submit --- */
+        .footer { text-align: center; }
+        #submit-btn { padding: 12px 45px !important; background: #f6931f !important; border: 1px solid #d47d1a !important; font-weight: bold !important; text-transform: uppercase; cursor: pointer; }
+        
+        /* --- Dialog Styling --- */
+        #results pre { background: #f4f4f4; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.9em; }
+        /* Hides the small [X] in the top right of the dialog */
+        .ui-dialog-titlebar-close {
+             display: none !important;
+        }

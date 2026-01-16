@@ -1,80 +1,90 @@
 <!doctype html>
-<html lang="us">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Alien Sighting Form</title>
-     <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/jquery-ui-custom.css">
+    <title>Alien Sighting Form - Secure Portal</title>
+    <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/alien.css">
-</head>
-<body>
+    <script src="external/jquery/jquery.js" defer></script>
+    <script src="js/jquery-ui.js" defer></script>
+    <script src="js/aliensitinglog.js" defer></script>
+    </head><body>
 
 <div class="container">
     <form id="alienForm">
         <header>
-            <img src="images/aliens.png" width="80" height="40">
-            <h1 class="ui-state-default ui-corner-all">Alien Sighting Form</h1>
+            <img src="images/aliens.png" width="80" height="40" alt="Logo">
+            <h1 class="ui-state-default ui-corner-all">UAP BIOMETRIC LOG</h1>
         </header>
 
         <div class="form-grid">
-            <div class="col-left">
-                <h3 class="ui-state-default ui-corner-all" style="background: #00eeff">Sighting Date</h3>
-                <div id="datepicker"></div>
-
-                <h3 class="ui-state-default ui-corner-all" style="background: #00eeff">Creature Type</h3>
-                <fieldset id="creatureType">
-                    <label for="sponge">Sponge</label><input type="radio" name="ct" id="sponge">
-                    <label for="worm">Worm</label><input type="radio" name="ct" id="worm" checked>
-                    <label for="insect">Insect</label><input type="radio" name="ct" id="insect">
-                    <label for="fish">Fish</label><input type="radio" name="ct" id="fish">
-                </fieldset>
+            <div class="column">
+                <section>
+                    <h3>Temporal Stamp</h3>
+                    <div class="yellow-box" id="datepicker"></div>
+                </section>
+                <section>
+                    <h3>Morphology</h3>
+                    <div class="yellow-box short-box">
+                        <fieldset id="creatureType">
+                            <input type="radio" name="ct" id="sponge"><label for="sponge">Sponge</label>
+                            <input type="radio" name="ct" id="worm" checked><label for="worm">Worm</label>
+                            <input type="radio" name="ct" id="insect"><label for="insect">Insect</label>
+                            <input type="radio" name="ct" id="fish"><label for="fish">Fish</label>
+                        </fieldset>
+                    </div>
+                </section>
             </div>
 
-            <div class="col-right">
-                <h3 class="ui-state-default ui-corner-all" style="background: #00eeff">Physical Characteristics</h3>
-                
-                <p>Weight: <span id="w-label" class="stat-val">20 kg</span></p>
-                <div id="slider"></div>
-
-                <p>Height: <span id="h-label" class="stat-val">2 m</span></p>
-                <div id="slider2"></div>
-
-                <div class="spinner-group">
-                    <div>Eyes<br><input id="spinnereyes" value="5"></div>
-                    <div>Arms<br><input id="spinnerarms" value="0"></div>
-                    <div>Legs<br><input id="spinnerlegs" value="5"></div>
-                </div>
-
-                <h3 class="ui-state-default ui-corner-all" style="background: #00eeff">Creature Color</h3>
-                <div class="color-area">
-                    <div class="sliders-container">
-                        <div id="red"></div>
-                        <div id="green"></div>
-                        <div id="blue"></div>
+            <div class="column">
+                <section>
+                    <h3>Anatomical Metrics</h3>
+                    <div class="yellow-box">
+                        <div class="spinner-group">
+                            <div>Eyes<br><input id="spinnereyes" value="5"></div>
+                            <div>Arms<br><input id="spinnerarms" value="0"></div>
+                            <div>Legs<br><input id="spinnerlegs" value="5"></div>
+                        </div>
+                        <div class="stat-item">
+                            <p style="margin:5px 0;">Mass: <span id="w-label" style="color:#f6931f; font-weight:bold;">20 kg</span></p>
+                            <div id="slider"></div>
+                        </div>
+                        <div class="stat-item">
+                            <p style="margin:12px 0 5px 0;">Height: <span id="h-label" style="color:#f6931f; font-weight:bold;">2 m</span></p>
+                            <div id="slider2"></div>
+                        </div>
                     </div>
-                    <div id="swatch" class="ui-widget-content ui-corner-all"></div>
-                </div>
+                </section>
+
+                <section>
+                    <h3>Visual Spectrum</h3>
+                    <div class="yellow-box short-box">
+                        <div class="sliders-wrap">
+                            <p class="color-label">RED CHROMA</p><div id="red"></div>
+                            <p class="color-label">GREEN CHROMA</p><div id="green"></div>
+                            <p class="color-label">BLUE CHROMA</p><div id="blue"></div>
+                        </div>
+                        <div id="swatch"></div>
+                    </div>
+                </section>
             </div>
         </div>
 
+        <div class="thematic-divider"><div class="divider-marker">ID</div></div>
+
         <div class="footer">
-            <button id="dialog-link" class="ui-button ui-corner-all">Submit Report</button>
+            <button id="submit-btn" type="button" class="ui-button ui-corner-all">SUBMIT ENCRYPTED DATA</button>
         </div>
     </form>
 </div>
 
-<div id="dialog" title="Report Submitted">
-   <header>
-            <h3 class="ui-state-default ui-corner-all">Summary Data</h3>
-          
-        </header>
-       <img src="images/aliens.png" width="80" height="40">
+<div id="dialog" title="Transmission Preview">
     <div id="results"></div>
 </div>
 
 <script src="external/jquery/jquery.js"></script>
 <script src="js/jquery-ui.js"></script>
-<script src="js/aliensitinglog.js">
-</script>
+<script src="js/main.js"></script>
+
 </body>
 </html>
