@@ -42,19 +42,17 @@ $(function() {
         change: refreshSwatch
     });
 
-    // Set Default Swatch Colors
     $("#red").slider("value", 255);
     $("#green").slider("value", 140);
     $("#blue").slider("value", 60);
 
-    // 3. DIALOG INITIALIZATION (If you add <div id="dialog"></div> to your HTML)
+    // 3. DIALOG INITIALIZATION
     if ($("#dialog").length) {
       $("#dialog").dialog({ 
             autoOpen: false, 
             modal: true, 
             width: 450,
             open: function() {
-                // Check if the image is already there to prevent duplicates
                 if ($(this).parent().find(".dialog-logo").length === 0) {
                     $(this).parent().find(".ui-dialog-title").prepend(
                         '<img src="images/aliens.png" class="dialog-logo" style="width:30px; height:15px; vertical-align:middle; margin-right:10px;">'
@@ -67,8 +65,8 @@ $(function() {
         });
     }
 
-    // 4. GOOGLE SHEETS SUBMISSION FUNCTION
-    function sendToGoogleSheets(data) {
+    // 4. GOOGLE SHEETS SUBMISSION FUNCTION (Enhanced with Loading Reset)
+    function sendToGoogleSheets(data, $btn, originalText) {
         const scriptURL = "https://script.google.com/macros/s/AKfycbwSb8EHqx3sDEZhYyChcdxSVppDMxlHrlyAvCINvWCQRHvJVxk2_48Rax5Th4wEpEUr/exec";
 
         fetch(scriptURL, {
@@ -80,25 +78,40 @@ $(function() {
         })
         .then(() => {
             console.log("Data sent successfully!");
-            // Use a simple alert if #results doesn't exist in HTML
             if ($("#results").length) {
                 $("#results").append("<p style='color:green; font-weight:bold;'>✔ Sent to Google Sheet</p>");
-            } else {
-                alert("Data Sent to Secure Archives");
             }
+            // Clear the form after success
+            $("#alienForm")[0].reset();
+            // Reset sliders to defaults manually
+            $("#slider, #slider2").slider("value", 20); 
+            $("#w-label").text("20 kg");
+            $("#h-label").text("2 m");
         })
         .catch(error => {
             console.error('Error!', error.message);
+            alert("Transmission failed. Interference detected.");
+        })
+        .finally(() => {
+            // Restore button state
+            $btn.prop('disabled', false).removeClass('btn-loading');
+            $btn.text(originalText);
         });
     }
 
-    // 5. CLICK HANDLER (Unified with HTML ID #submit-btn)
+    // 5. CLICK HANDLER (With Loading UI)
     $("#submit-btn").click(function(event) {
         event.preventDefault();
         
+        const $btn = $(this);
+        const originalText = $btn.text();
+
+        // Enter Loading State
+        $btn.prop('disabled', true).addClass('btn-loading');
+        $btn.html('<span class="spinner"></span> UPLOADING...');
+        
         const dateObj = $("#datepicker").datepicker("getDate");
         
-        // Construct the JSON object
         const siteReport = {
             date: dateObj ? $.datepicker.formatDate("yy-mm-dd", dateObj) : "None",
             type: $("input[name='ct']:checked").attr('id') || "None",
@@ -112,13 +125,11 @@ $(function() {
 
         console.log("Submitting:", siteReport);
 
-        // Open Dialog if it exists
         if ($("#dialog").length) {
             $("#results").html("<pre>" + JSON.stringify(siteReport, null, 2) + "</pre>");
             $("#dialog").dialog("open");
         }
 
-        // Send to Google
-        sendToGoogleSheets(siteReport);
+        sendToGoogleSheets(siteReport, $btn, originalText);
     });
 });

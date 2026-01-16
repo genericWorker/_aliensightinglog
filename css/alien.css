@@ -100,3 +100,69 @@
         .ui-dialog-titlebar-close {
              display: none !important;
         }
+        /* 1. Change Header colors to Brown (Calendar & Dialog) */
+        .ui-datepicker-header, 
+        .ui-dialog-titlebar,
+        .ui-widget-header {
+            background-color: #5d4037 !important; /* Deep Brown */
+            background-image: none !important;    /* STOPS THE 404 ERROR */
+            color: #ffffff !important;           /* White text for contrast */
+            border: 1px solid #3e2723 !important;
+        }
+
+        /* 2. Fix the "Gloss-Wave" and texture errors on other elements */
+        .ui-state-default, 
+        .ui-button, 
+        .ui-state-active, 
+        .ui-state-hover,
+        .ui-spinner,
+        .ui-slider-handle {
+            background-image: none !important;    /* STOPS THE 404 ERROR */
+        }
+
+        /* 3. Keep the Calendar body clean */
+        .ui-datepicker {
+            padding: 0 !important;
+            border: 1px solid #ccc !important;
+        }
+
+        /* THE NUKE: Force-kill all background image requests for jQuery UI */
+[class^="ui-"], [class*=" ui-"] {
+    background-image: none !important;
+}
+
+/* Ensure your Brown Headers stay Brown */
+.ui-datepicker-header, 
+.ui-dialog-titlebar,
+.ui-widget-header {
+    background-color: #5d4037 !important;
+    color: #ffffff !important;
+}
+
+/* Ensure your Yellow Boxes stay Yellow */
+.yellow-box {
+    background-color: #fff59d !important;
+}
+
+/* Spinner Animation */
+.spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Style for the disabled button state */
+.btn-loading {
+    opacity: 0.7;
+    cursor: not-allowed !important;
+}
+   
