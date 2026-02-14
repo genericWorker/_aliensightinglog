@@ -48,7 +48,7 @@ $(function() {
 
     // 3. DIALOG INITIALIZATION
     if ($("#dialog").length) {
-      $("#dialog").dialog({ 
+        $("#dialog").dialog({ 
             autoOpen: false, 
             modal: true, 
             width: 450,
@@ -65,7 +65,7 @@ $(function() {
         });
     }
 
-    // 4. GOOGLE SHEETS SUBMISSION FUNCTION (Enhanced with Loading Reset)
+    // 4. GOOGLE SHEETS SUBMISSION FUNCTION
     function sendToGoogleSheets(data, $btn, originalText) {
         const scriptURL = "https://script.google.com/macros/s/AKfycbwSb8EHqx3sDEZhYyChcdxSVppDMxlHrlyAvCINvWCQRHvJVxk2_48Rax5Th4wEpEUr/exec";
 
@@ -78,12 +78,14 @@ $(function() {
         })
         .then(() => {
             console.log("Data sent successfully!");
-            $("#alienForm")[0].reset();
             
-            // Reset Sliders & Labels visually
+            // Reset Button State
+            $btn.prop('disabled', false).removeClass('btn-loading').text(originalText);
+            
+            // Reset Form and Sliders
+            $("#alienForm")[0].reset();
             $("#slider").slider("value", 20);
             $("#w-label").text("20 kg");
-            
             $("#slider2").slider("value", 2);
             $("#h-label").text("2 m");
             
@@ -94,21 +96,28 @@ $(function() {
             $("#swatch").css("background-color", "rgb(255, 140, 60)");
             
             if ($("#results").length) {
-                $("#results").append("<p style='color:green; font-weight:bold;'>✔ Sent to Google Sheet</p>");
+                const sheetURL = "https://docs.google.com/spreadsheets/d/11ej9qW-W0Dgs1jbdxiaHNcEEQVMHtcEGQl8wMxxzH1I/edit?usp=sharing";
+                const link = $("<p style='color:green; font-weight:bold; cursor:pointer;'>" +
+                             "✔ <span id='open-sheet' style='text-decoration:underline;'>View Transmission in Google Sheets</span>" +
+                             "</p>");
+
+                $("#results").append(link);
+
+                $("#open-sheet").on("click", function() {
+                    const width = 800, height = 600, left = 100, top = 100;
+                    window.open(sheetURL, "GoogleSheet", 
+                        `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+                    );
+                });
             }
         })
         .catch(error => {
             console.error('Error!', error.message);
-            alert("Transmission failed. Interference detected.");
-        })
-        .finally(() => {
-            // Restore button state
-            $btn.prop('disabled', false).removeClass('btn-loading');
-            $btn.text(originalText);
+            $btn.prop('disabled', false).removeClass('btn-loading').text("Error - Try Again");
         });
     }
 
-    // 5. CLICK HANDLER (With Loading UI)
+    // 5. CLICK HANDLER
     $("#submit-btn").click(function(event) {
         event.preventDefault();
         
@@ -131,8 +140,6 @@ $(function() {
             arms: $("#spinnerarms").spinner("value"),
             legs: $("#spinnerlegs").spinner("value"),
         };
-
-        console.log("Submitting:", siteReport);
 
         if ($("#dialog").length) {
             $("#results").html("<pre>" + JSON.stringify(siteReport, null, 2) + "</pre>");
